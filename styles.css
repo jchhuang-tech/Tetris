@@ -18,6 +18,14 @@ body {
   flex-wrap: wrap;
 }
 
+.taken {
+  background-color: blue;
+}
+
+.hidden {
+  background-color: white;
+}
+
 .grid div {
   width: 20px;
   height: 20px;

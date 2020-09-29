@@ -6,7 +6,7 @@ body {
 .level-title {
   /* font-family: 'Press Start 2P', cursive; */
   font-size: 3rem;
-  margin:  5%;
+  margin: 5%;
   /* color: #FEF2BF; */
 }
 
@@ -36,9 +36,28 @@ body {
   background-color: blue;
 }
 
+.mini-grid {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: white;
+  margin-left: 50px;
+}
 
+.mini-grid div {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
 
+.container {
+  display: flex;
+}
 
+.display {
+  background-color: green;
+}
 
 /*
 .container {

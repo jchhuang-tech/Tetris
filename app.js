@@ -1,6 +1,9 @@
 const grid = $('.grid');
 let squares = Array.from($('.grid div'));
 const w = 10;
+var timerID;
+var nextBlock;
+var started;
 
 const lTetromino = [
   [1, 2, 1 + w, 1 + w * 2],
@@ -39,7 +42,7 @@ const iTetromino = [
 
 const tetrominoes = [lTetromino, zTetromino, tTetromino, oTetromino, iTetromino];
 
-var timerID = setInterval(moveDown, 1000);
+
 // let curPosition = 4;
 // let curRotation = 0;
 // let random = Math.floor(Math.random() * tetrominoes.length);
@@ -109,11 +112,14 @@ function newBlock() {
   //   squares.slice(190,200).forEach(index => index.classList.remove('taken','tetromino'));
   //   allMoveDown();
   // }
-  curBlock = Math.floor(Math.random() * tetrominoes.length);
+  // curBlock = Math.floor(Math.random() * tetrominoes.length);
+  curBlock = nextBlock;
   curRotation = Math.floor(Math.random() * tetrominoes[curBlock].length);
   cur = tetrominoes[curBlock][curRotation];
   curPosition = 4;
   draw();
+  nextBlock = Math.floor(Math.random() * tetrominoes.length);
+  displayShape();
 }
 
 function freeze() {
@@ -161,8 +167,39 @@ $(document).keydown(function(event) {
   }
 });
 
-newBlock();
-draw();
+const displaySquares = document.querySelectorAll('.mini-grid div');
+const displayWidth = 4;
+let displayIndex = 0;
+
+const upNextTetromino = [
+  [1, 2, 1 + displayWidth, 1 + displayWidth * 2],
+  [displayWidth * 2, 1 + displayWidth, 1 + displayWidth * 2, 2 + displayWidth * 1],
+  [1, displayWidth, 1 + displayWidth, 2 + displayWidth],
+  [0, 1, displayWidth, 1 + displayWidth],
+  [1, 1 + displayWidth, 1 + displayWidth * 2, 1 + displayWidth * 3]
+];
+
+
+
+function displayShape() {
+  $('.mini-grid div').each(function(){
+    $(this).removeClass('display');
+  });
+  upNextTetromino[nextBlock].forEach(index => {
+    displaySquares[displayIndex+index].classList.add('display');
+  })
+}
+
+//start
+$('.start-btn').click(function(){
+  if(!started){
+    started = true;
+    timerID = setInterval(moveDown, 1000);
+    nextBlock = Math.floor(Math.random() * tetrominoes.length);
+    newBlock();
+    draw();
+  }
+});
 
 // undraw();
 

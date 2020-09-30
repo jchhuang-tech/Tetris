@@ -1,12 +1,12 @@
 body {
-  text-align: center;
+  /* text-align: center; */
   /* background-color: #011F3F; */
 }
 
 .level-title {
   /* font-family: 'Press Start 2P', cursive; */
   font-size: 3rem;
-  margin: 5%;
+  /* margin: 5%; */
   /* color: #FEF2BF; */
 }
 
@@ -23,7 +23,8 @@ body {
 }
 
 .hidden {
-  background-color: white;
+  /* background-color: white; */
+  visibility: hidden;
 }
 
 .grid div {

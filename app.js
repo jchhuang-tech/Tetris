@@ -87,7 +87,7 @@ function rotate() {
   cur = tetrominoes[curBlock][curRotation];
   var isOutOfBound = cur.some(index => (curPosition + index) % w === w - 1) &&
     cur.some(index => (curPosition + index) % w === 0);
-  console.log(isOutOfBound);
+  // console.log(isOutOfBound);
   if(isOutOfBound) {
     curRotation = (curRotation + 3) % 4;
     cur = tetrominoes[curBlock][curRotation];
@@ -111,7 +111,8 @@ function newBlock() {
   cur = tetrominoes[curBlock][curRotation];
   curPosition = 4;
   if(cur.some(index => squares[index+curPosition].classList.contains('taken'))){
-    endGame();
+    console.log('END');
+    gameOver();
   }
   draw();
   nextBlock = Math.floor(Math.random() * tetrominoes.length);
@@ -128,9 +129,9 @@ function clearFullRows() {
       $('.score').text(score);
       row.forEach(index => squares[index].classList.remove('taken','tetromino'));
       let squaresRemoved = squares.splice(i,w);
-      console.log(squaresRemoved);
+      // console.log(squaresRemoved);
       squares = squaresRemoved.concat(squares);
-      console.log(squares);
+      // console.log(squares);
       squares.forEach(cell => grid.appendChild(cell));
 
     }
@@ -149,31 +150,37 @@ function freeze() {
   }
 }
 
-function endGame() {
-  $('.level-title').html('GAME OVER');
+function gameOver() {
+  $('.title-text').html('GAME OVER');
+  $('.title-text').css('color','#ff414d');
   clearInterval(timerID);
-  $(document).off('keydown');
+  $(document).off('keydown', control);
 }
 
-$(document).keydown(function(event) {
-  console.log(event);
+function control(event) {
+  console.log(event.key);
   switch (event.key) {
     case 'a':
+    case 'ArrowLeft':
       moveLeft();
       break;
     case 's':
+    case 'ArrowDown':
       moveDown();
       break;
     case 'd':
+    case 'ArrowRight':
       moveRight();
       break;
     case 'w':
     case ' ':
+    case 'ArrowUp':
+    case 'Enter':
       rotate();
       break;
     default:
   }
-});
+}
 
 const displaySquares = document.querySelectorAll('.mini-grid div');
 const displayWidth = 4;
@@ -201,11 +208,31 @@ function displayShape() {
 //start
 $('.start-btn').click(function(){
   if(!started){
+    $('.start-btn').text('RESET');
     started = true;
     timerID = setInterval(moveDown, 1000);
     nextBlock = Math.floor(Math.random() * tetrominoes.length);
-    $('.next-text').text('NEXT');
+    $(document).on('keydown',control);
+    $('.next-area').css('display','block');
     newBlock();
     draw();
+  }
+  else {
+    $('.start-btn').text('START');
+    started = false;
+    clearInterval(timerID);
+    $(document).off('keydown', control);
+    $('.title-text').text('TETRIS');
+    $('.score').text('0');
+    $('.level').text('1');
+    $('.next-area').css('display','none');
+    $('.grid div').each(function(){
+      if(!$(this).hasClass('hidden')){
+        $(this).removeClass('taken tetromino');
+      }
+    });
+    // $('.mini-grid div').each(function(){
+    //   $(this).removeClass('display');
+    // });
   }
 });

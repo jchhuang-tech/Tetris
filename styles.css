@@ -78,6 +78,7 @@ h4 {
 .next-area {
   text-align: center;
   width: 100px;
+  display: none;
 }
 
 .next-text {

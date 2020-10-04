@@ -2,10 +2,11 @@ const grid = document.querySelector('.grid');
 let squares = Array.from($('.grid div'));
 const w = 10;
 var timerID;
-var nextBlock;
+var nextPiece;
 var started;
 var score = 0;
 var level = 1;
+const colors = ['#5d54a4', '#ff9a76', '#de4463', '#0278ae', '#7ea04d'];
 
 const lTetromino = [
   [1, 2, 1 + w, 1 + w * 2],
@@ -46,13 +47,17 @@ const tetrominoes = [lTetromino, zTetromino, tTetromino, oTetromino, iTetromino]
 
 function draw() {
   cur.forEach(index => {
-    squares[curPosition + index].classList.add('tetromino');
+    squares[curPosition + index].classList.add('taken');
+    $(squares[curPosition + index]).css('background-color', colors[curPiece]);
+    $(squares[curPosition + index]).css('border', '4px outset '+colors[curPiece]);
   })
 };
 
 function undraw() {
   cur.forEach(index => {
-    squares[curPosition + index].classList.remove('tetromino');
+    squares[curPosition + index].classList.remove('taken');
+    $(squares[curPosition + index]).css('background-color', '');
+    $(squares[curPosition + index]).css('border', '');
   })
 };
 
@@ -85,13 +90,14 @@ function moveLeft() {
 function rotate() {
   undraw();
   curRotation = (curRotation + 1) % 4;
-  cur = tetrominoes[curBlock][curRotation];
+  cur = tetrominoes[curPiece][curRotation];
   var isOutOfBound = cur.some(index => (curPosition + index) % w === w - 1) &&
     cur.some(index => (curPosition + index) % w === 0);
   // console.log(isOutOfBound);
-  if(isOutOfBound) {
+  var isOverlapping = cur.some(index => $(squares[curPosition + index]).hasClass('taken'));
+  if(isOutOfBound || isOverlapping) {
     curRotation = (curRotation + 3) % 4;
-    cur = tetrominoes[curBlock][curRotation];
+    cur = tetrominoes[curPiece][curRotation];
   }
   draw();
 }
@@ -106,29 +112,27 @@ function rotate() {
 //   });
 // }
 
-function newBlock() {
-  curBlock = nextBlock;
-  curRotation = Math.floor(Math.random() * tetrominoes[curBlock].length);
-  cur = tetrominoes[curBlock][curRotation];
+function newPiece() {
+  curPiece = nextPiece;
+  curRotation = Math.floor(Math.random() * tetrominoes[curPiece].length);
+  cur = tetrominoes[curPiece][curRotation];
   curPosition = 4;
   if(cur.some(index => squares[index+curPosition].classList.contains('taken'))){
     // console.log('END');
     gameOver();
   }else{
     draw();
-    nextBlock = Math.floor(Math.random() * tetrominoes.length);
+    nextPiece = Math.floor(Math.random() * tetrominoes.length);
     displayShape();
   }
 }
 
 function levelUp(){
-  if (score % 100 === 0) {
-    level++;
-    $('.level').text(level);
-    let interval = (100000/(100*level+1000/9)+100);
-    clearInterval(timerID);
-    timerID = setInterval(moveDown, interval);
-  }
+  level++;
+  $('.level').text(level);
+  let interval = (100000/(100*level+1000/9)+100);
+  clearInterval(timerID);
+  timerID = setInterval(moveDown, interval);
 }
 
 function clearFullRows() {
@@ -139,8 +143,18 @@ function clearFullRows() {
     if (full) {
       score+=10;
       $('.score').text(score);
-      levelUp();
-      row.forEach(index => squares[index].classList.remove('taken','tetromino'));
+      if (score % 100 === 0) {
+        levelUp();
+      }
+      var audio = new Audio("sounds/clear-line.mp3");
+      audio.volume = 0.1;
+      audio.play();
+      row.forEach(index => {
+        $(squares[index]).removeClass('taken');
+        $(squares[index]).css('background-color','');
+        $(squares[index]).css('border', '');
+      });
+      // row.forEach(index => squares[index].classList.remove('taken','tetromino'));
       let squaresRemoved = squares.splice(i,w);
       // console.log(squaresRemoved);
       squares = squaresRemoved.concat(squares);
@@ -154,9 +168,9 @@ function freeze() {
   if (cur.some(index => squares[curPosition + index].classList.contains('taken'))) {
     curPosition -= w;
     draw();
-    cur.forEach(index => squares[curPosition + index].classList.add('taken'));
+    // cur.forEach(index => squares[curPosition + index].classList.add('taken'));
     clearFullRows();
-    newBlock();
+    newPiece();
   } else {
     draw();
   }
@@ -210,10 +224,15 @@ const upNextTetromino = [
 
 function displayShape() {
   $('.mini-grid div').each(function(){
-    $(this).removeClass('display');
+    $(this).css('background-color','');
+    $(this).removeClass('taken');
+    $(this).css('border', '');
   });
-  upNextTetromino[nextBlock].forEach(index => {
-    displaySquares[displayIndex+index].classList.add('display');
+  upNextTetromino[nextPiece].forEach(index => {
+    // displaySquares[displayIndex+index].classList.add('display');
+    $(displaySquares[displayIndex+index]).css('background-color',colors[nextPiece]);
+    $(displaySquares[displayIndex+index]).addClass('taken');
+    $(displaySquares[displayIndex+index]).css('border', '4px outset '+colors[nextPiece]);
   })
 }
 
@@ -223,10 +242,10 @@ $('.start-btn').click(function(){
     $('.start-btn').text('RESET');
     started = true;
     timerID = setInterval(moveDown, 1000);
-    nextBlock = Math.floor(Math.random() * tetrominoes.length);
+    nextPiece = Math.floor(Math.random() * tetrominoes.length);
     $(document).on('keydown',control);
     $('.next-area').css('display','block');
-    newBlock();
+    newPiece();
     draw();
   }
   else {
@@ -235,6 +254,7 @@ $('.start-btn').click(function(){
     clearInterval(timerID);
     $(document).off('keydown', control);
     $('.title-text').text('TETRIS');
+    $('.title-text').css('color','#ffefa0');
     score = 0;
     $('.score').text(score);
     level = 1;
@@ -242,7 +262,9 @@ $('.start-btn').click(function(){
     $('.next-area').css('display','none');
     $('.grid div').each(function(){
       if(!$(this).hasClass('hidden')){
-        $(this).removeClass('taken tetromino');
+        $(this).removeClass('taken');
+        $(this).css('background-color','');
+        $(this).css('border', '');
       }
     });
     // $('.mini-grid div').each(function(){

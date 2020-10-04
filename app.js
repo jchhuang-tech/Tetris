@@ -5,6 +5,7 @@ var timerID;
 var nextBlock;
 var started;
 var score = 0;
+var level = 1;
 
 const lTetromino = [
   [1, 2, 1 + w, 1 + w * 2],
@@ -111,12 +112,23 @@ function newBlock() {
   cur = tetrominoes[curBlock][curRotation];
   curPosition = 4;
   if(cur.some(index => squares[index+curPosition].classList.contains('taken'))){
-    console.log('END');
+    // console.log('END');
     gameOver();
+  }else{
+    draw();
+    nextBlock = Math.floor(Math.random() * tetrominoes.length);
+    displayShape();
   }
-  draw();
-  nextBlock = Math.floor(Math.random() * tetrominoes.length);
-  displayShape();
+}
+
+function levelUp(){
+  if (score % 100 === 0) {
+    level++;
+    $('.level').text(level);
+    let interval = (100000/(100*level+1000/9)+100);
+    clearInterval(timerID);
+    timerID = setInterval(moveDown, interval);
+  }
 }
 
 function clearFullRows() {
@@ -127,13 +139,13 @@ function clearFullRows() {
     if (full) {
       score+=10;
       $('.score').text(score);
+      levelUp();
       row.forEach(index => squares[index].classList.remove('taken','tetromino'));
       let squaresRemoved = squares.splice(i,w);
       // console.log(squaresRemoved);
       squares = squaresRemoved.concat(squares);
       // console.log(squares);
       squares.forEach(cell => grid.appendChild(cell));
-
     }
   }
 }
@@ -158,7 +170,7 @@ function gameOver() {
 }
 
 function control(event) {
-  console.log(event.key);
+  // console.log(event.key);
   switch (event.key) {
     case 'a':
     case 'ArrowLeft':
@@ -223,8 +235,10 @@ $('.start-btn').click(function(){
     clearInterval(timerID);
     $(document).off('keydown', control);
     $('.title-text').text('TETRIS');
-    $('.score').text('0');
-    $('.level').text('1');
+    score = 0;
+    $('.score').text(score);
+    level = 1;
+    $('.level').text(level);
     $('.next-area').css('display','none');
     $('.grid div').each(function(){
       if(!$(this).hasClass('hidden')){

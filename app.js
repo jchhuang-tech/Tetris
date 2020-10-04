@@ -88,15 +88,15 @@ function rotate() {
   draw();
 }
 
-function allMoveDown() {
-  var allIndex = Array.from(Array(200).keys());
-  allIndex.forEach(index => {
-    if (squares[index].classList.contains('taken')) {
-      squares[index].classList.remove('taken', 'tetromino');
-      squares[index + w].classList.add('taken', 'tetromino');
-    }
-  });
-}
+// function allMoveDown() {
+//   var allIndex = Array.from(Array(200).keys());
+//   allIndex.forEach(index => {
+//     if (squares[index].classList.contains('taken')) {
+//       squares[index].classList.remove('taken', 'tetromino');
+//       squares[index + w].classList.add('taken', 'tetromino');
+//     }
+//   });
+// }
 
 function newBlock() {
   curBlock = nextBlock;

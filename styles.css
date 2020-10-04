@@ -1,25 +1,65 @@
 body {
   /* text-align: center; */
-  /* background-color: #011F3F; */
+  background-color: #011F3F;
 }
 
-.level-title {
+h1 {
   /* font-family: 'Press Start 2P', cursive; */
-  font-size: 3rem;
-  /* margin: 5%; */
-  /* color: #FEF2BF; */
+  /* font-size: 3rem; */
+  /* text-align: center; */
+  /* color: white; */
+  margin: 5%;
+  color: #FEF2BF;
+}
+
+h2 {
+  color: white;
+  color: #FEF2BF;
+}
+
+h3 {
+  color: white;
+  color: #FEF2BF;
+}
+
+h4 {
+  color: white;
+  color: #FEF2BF;
+}
+
+.big-container {
+  padding: 10% 18%;
+  /* display: inline-flex; */
+  /* text-align: center; */
+}
+
+.container {
+  display: inline-flex;
+  text-align: center;
+  padding: 0 0 0 5%;
+}
+
+.title-area {
+  /* padding: 10% 0 0 0; */
+  text-align: center;
+}
+
+.start-btn {
+  /* text-align: center; */
+  /* display: block; */
+  margin: 5%;
 }
 
 .grid {
   height: 400px;
   width: 200px;
-  background-color: yellow;
+  background-color: #b9fffc;
   display: flex;
   flex-wrap: wrap;
 }
 
 .taken {
-  background-color: blue;
+  background-color: #590995;
 }
 
 .hidden {
@@ -34,7 +74,18 @@ body {
 }
 
 .tetromino {
-  background-color: blue;
+  background-color: #590995;
+}
+
+.next-area {
+text-align: center;
+}
+
+.next-text {
+  /* display: flex; */
+  /* display: block; */
+  margin: 10% 0 0 20%;
+  /* padding: 0 10%; */
 }
 
 .mini-grid {
@@ -42,8 +93,8 @@ body {
   height: 80px;
   display: flex;
   flex-wrap: wrap;
-  background-color: white;
-  margin-left: 50px;
+  margin: 10% 0 0 20%;
+  outline: 1px solid white;
 }
 
 .mini-grid div {
@@ -52,10 +103,6 @@ body {
   display: inline-block;
 }
 
-.container {
-  display: flex;
-}
-
 .display {
-  background-color: green;
+  background-color: #c62a88;
 }

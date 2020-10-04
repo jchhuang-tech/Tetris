@@ -1,25 +1,23 @@
 body {
   /* text-align: center; */
   background-color: #011F3F;
+  font-family: 'Press Start 2P', cursive;
 }
 
 h1 {
-  /* font-family: 'Press Start 2P', cursive; */
-  /* font-size: 3rem; */
-  /* text-align: center; */
-  /* color: white; */
+  font-size: 3rem;
   margin: 5%;
-  color: #FEF2BF;
+  color: #ffefa0;
 }
 
 h2 {
-  color: white;
+  margin: 5%;
   color: #FEF2BF;
+  color: #ac4b1c;
 }
 
 h3 {
-  color: white;
-  color: #FEF2BF;
+  color: #fca652;
 }
 
 h4 {
@@ -28,7 +26,7 @@ h4 {
 }
 
 .big-container {
-  padding: 10% 18%;
+  padding: 10% 15%;
   /* display: inline-flex; */
   /* text-align: center; */
 }
@@ -54,7 +52,7 @@ h4 {
   height: 400px;
   width: 200px;
   background-color: #b9fffc;
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
 }
 
@@ -78,23 +76,21 @@ h4 {
 }
 
 .next-area {
-text-align: center;
+  text-align: center;
+  width: 100px;
 }
 
 .next-text {
-  /* display: flex; */
-  /* display: block; */
   margin: 10% 0 0 20%;
-  /* padding: 0 10%; */
 }
 
 .mini-grid {
   width: 80px;
   height: 80px;
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   margin: 10% 0 0 20%;
-  outline: 1px solid white;
+  /* outline: 1px solid white; */
 }
 
 .mini-grid div {

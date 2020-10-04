@@ -85,6 +85,13 @@ function rotate() {
   undraw();
   curRotation = (curRotation + 1) % 4;
   cur = tetrominoes[curBlock][curRotation];
+  var isOutOfBound = cur.some(index => (curPosition + index) % w === w - 1) &&
+    cur.some(index => (curPosition + index) % w === 0);
+  console.log(isOutOfBound);
+  if(isOutOfBound) {
+    curRotation = (curRotation + 3) % 4;
+    cur = tetrominoes[curBlock][curRotation];
+  }
   draw();
 }
 
@@ -197,6 +204,7 @@ $('.start-btn').click(function(){
     started = true;
     timerID = setInterval(moveDown, 1000);
     nextBlock = Math.floor(Math.random() * tetrominoes.length);
+    $('.next-text').text('NEXT');
     newBlock();
     draw();
   }

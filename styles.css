@@ -48,6 +48,26 @@ h4 {
   margin: 5%;
 }
 
+.start-message {
+  position: absolute;
+  top: 25%;
+  left: 10%;
+  margin: 0 0 0 53px;
+  /* display: none; */
+  opacity: 0;
+}
+
+@media only screen and (max-width: 991px) {
+  .start-message {
+    position: absolute;
+    top: 25%;
+    left: 5%;
+    margin: 0 0 0 53px;
+    /* display: none; */
+    opacity: 0;
+  }
+}
+
 .grid {
   height: 400px;
   width: 200px;

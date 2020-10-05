@@ -236,12 +236,21 @@ function displayShape() {
   })
 }
 
+function startMsg() {
+  $('.start-message').animate({
+    opacity: '1'
+  }).animate({
+    opacity: '0'
+  });
+}
+
 //start
 $('.start-btn').click(function(){
   if(!started){
     $('.start-btn').text('RESET');
     started = true;
     timerID = setInterval(moveDown, 1000);
+    startMsg();
     nextPiece = Math.floor(Math.random() * tetrominoes.length);
     $(document).on('keydown',control);
     $('.next-area').css('display','block');
